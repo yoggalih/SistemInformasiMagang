@@ -19,8 +19,16 @@ return new class extends Migration
             $table->string('program_studi', 100);
             $table->string('email', 100)->unique();
             $table->string('nomor_hp', 20);
-            $table->enum('pilihan_divisi', ['ptip', 'kepegawaian', 'keuangan', 'hukum', 'umum']);
-            $table->string('surat_pengantar_path'); // Untuk menyimpan path file PDF
+            // $table->enum('pilihan_divisi', ['ptip', 'kepegawaian', 'keuangan', 'hukum', 'umum']);
+            $table->string('surat_pengantar_path'); // Dari pendaftar
+            
+            // --- Kolom Admin Decision ---
+            $table->enum('status', ['pending', 'accepted', 'rejected'])->default('pending');
+            $table->string('alasan_admin', 500)->nullable();
+            $table->timestamp('tanggal_keputusan')->nullable();
+            $table->string('surat_keputusan_path')->nullable(); // Dari admin
+            // ----------------------------------------
+            
             $table->timestamps();
         });
     }
