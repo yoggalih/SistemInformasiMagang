@@ -11,6 +11,8 @@
     {{-- Tambahkan Font Awesome untuk icon di footer --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
         integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
 
 </head>
 {{-- PERUBAHAN: Menambahkan class untuk memastikan layout full height --}}
@@ -27,7 +29,8 @@
 
     {{-- BARIS UJI COBA --}}
     {{-- <h1 style="color: blue;">FOOTER AKAN MUNCUL DI BAWAH INI</h1> --}}
-     {{-- Footer: Dipanggil di sini --}} @include('components.footer')
-        {{-- Jika Anda memiliki JS --}} @vite('resources/js/app.js') </body>
+    {{-- Footer: Dipanggil di sini --}} @include('components.footer')
+    {{-- Jika Anda memiliki JS --}} @vite('resources/js/app.js')
+</body>
 
 </html>

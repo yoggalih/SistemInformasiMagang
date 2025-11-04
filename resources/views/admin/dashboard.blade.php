@@ -24,7 +24,7 @@
             </div>
         @endif
 
-        {{-- 0. BLOK PROFIL ADMIN (Baru) --}}
+        {{-- 0. BLOK PROFIL ADMIN --}}
         <div class="bg-white p-5 rounded-lg shadow-lg mb-8 border-l-4 border-pn-maroon">
             <div class="flex justify-between items-start">
                 <div>
@@ -81,9 +81,13 @@
                             HP</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">File
                             Pelamar</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Durasi Magang
+                        </th>
                         <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Status
                         </th>
                         <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi
+                        </th>
+                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Hapus
                         </th>
                     </tr>
                 </thead>
@@ -106,6 +110,27 @@
                                     class="text-blue-600 hover:text-blue-900" target="_blank">
                                     Unduh Surat
                                 </a>
+                            </td>
+                            {{-- KOLOM DURASI MAGANG [BARU] --}}
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-left">
+                                @if($applicant->tanggal_mulai && $applicant->tanggal_selesai)
+                                    @php
+                                        $startDate = \Carbon\Carbon::parse($applicant->tanggal_mulai);
+                                        $endDate = \Carbon\Carbon::parse($applicant->tanggal_selesai);
+                                        // Menghitung hari (ditambah 1 karena diffInDays hanya menghitung selisih antara 2 titik)
+                                        $durationDays = $startDate->diffInDays($endDate) + 1;
+                                        $durationMonths = $startDate->diffInMonths($endDate);
+                                    @endphp
+                                    <div class="font-medium text-gray-900">{{ $startDate->format('d M Y') }} - {{ $endDate->format('d M Y') }}</div>
+                                    <div class="text-xs text-gray-500 mt-1">
+                                        Total: {{ $durationDays }} hari
+                                        @if($durationMonths > 0)
+                                            ({{ $durationMonths }} bulan)
+                                        @endif
+                                    </div>
+                                @else
+                                    <span class="text-gray-500 text-xs italic">Tanggal tidak tersedia</span>
+                                @endif
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-center">
                                 @php
@@ -131,7 +156,7 @@
                                 @if ($applicant->status === 'pending')
                                     {{-- Tombol Proses (membuka Modal) --}}
                                     <button onclick="showProcessModal('{{ $applicant->id }}')"
-                                        class="bg-pn-maroon text-black px-3 py-1 rounded-md text-xs hover:bg-red-800">
+                                        class="bg-pn-maroon text-white px-3 py-1 rounded-md text-xs hover:bg-red-800">
                                         Proses Keputusan
                                     </button>
                                 @elseif ($applicant->status === 'accepted' && $applicant->surat_keputusan_path)
@@ -141,6 +166,17 @@
                                     </a>
                                 @else
                                     <span class="text-gray-500 text-xs italic">Sudah diproses</span>
+                                @endif
+                            </td>
+                            {{-- KOLOM HAPUS --}}
+                            <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
+                                @if ($applicant->status !== 'pending')
+                                    <button onclick="showDeleteModal('{{ $applicant->id }}')"
+                                        class="text-red-600 hover:text-red-900 text-xs px-3 py-1 border border-red-600 rounded-md hover:bg-red-50">
+                                        Hapus
+                                    </button>
+                                @else
+                                    <span class="text-gray-400 text-xs">Tunggu Keputusan</span>
                                 @endif
                             </td>
                         </tr>
@@ -156,7 +192,7 @@
                                     aria-hidden="true">&#8203;</span>
 
                                 <div
-                                    class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-xl sm:w-full">
+                                    class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-xl sm:w-full relative z-50">
 
                                     <form action="{{ route('admin.applicant.process', $applicant->id) }}" method="POST"
                                         enctype="multipart/form-data">
@@ -225,9 +261,66 @@
                                 </div>
                             </div>
                         </div>
+
+                        {{-- MODAL KONFIRMASI HAPUS --}}
+                        <div id="delete-modal-{{ $applicant->id }}" class="fixed inset-0 z-50 overflow-y-auto hidden">
+                            <div
+                                class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                                
+                                <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                                    <div class="absolute inset-0 bg-gray-900 opacity-75"></div>
+                                </div>
+
+                                <span class="hidden sm:inline-block sm:align-middle sm:h-screen"
+                                    aria-hidden="true">&#8203;</span>
+
+                                <div
+                                    class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full relative z-50">
+                                    <form action="{{ route('admin.applicant.delete', $applicant->id) }}" method="POST">
+                                        @csrf
+                                        <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                                            <div class="sm:flex sm:items-start">
+                                                <div
+                                                    class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                                                    <svg class="h-6 w-6 text-red-600" xmlns="http://www.w3.org/2000/svg"
+                                                        fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                                        aria-hidden="true">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
+                                                            d="M19 7l-.86 12.31A2 2 0 0116.14 21H7.86a2 2 0 01-1.98-1.69L5 7m4 0V5a2 2 0 012-2h2a2 2 0 012 2v2M8 7h8" />
+                                                    </svg>
+                                                </div>
+                                                <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                                                    <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-headline">
+                                                        Hapus Lamaran Permanen
+                                                    </h3>
+                                                    <div class="mt-2">
+                                                        <p class="text-sm text-gray-500">
+                                                            Anda yakin ingin menghapus lamaran magang dari **{{ $applicant->nama_lengkap }}**?
+                                                            <br>
+                                                            **Semua data dan file terkait akan dihapus secara permanen.** Pelamar ini akan bisa mengajukan lamaran baru.
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                                            <button type="submit"
+                                                class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 sm:ml-3 sm:w-auto sm:text-sm">
+                                                Ya, Hapus Permanen
+                                            </button>
+                                            <button type="button" onclick="hideDeleteModal('{{ $applicant->id }}')"
+                                                class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 sm:mt-0 sm:w-auto sm:text-sm">
+                                                Batal
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                     @empty
                         <tr>
-                            <td colspan="6" class="px-6 py-4 text-center text-gray-500">Tidak ada pengajuan magang
+                            <td colspan="8" class="px-6 py-4 text-center text-gray-500">Tidak ada pengajuan magang
                                 baru.</td>
                         </tr>
                     @endforelse
@@ -240,19 +333,35 @@
         </div>
     </div>
 
+    {{-- SCRIPTS --}}
     <script>
         function showProcessModal(id) {
             document.getElementById('modal-' + id).classList.remove('hidden');
             document.body.classList.add('overflow-hidden');
-            document.documentElement.classList.add('overflow-hidden'); // Tambahkan ke tag <html>
+            document.documentElement.classList.add('overflow-hidden');
             toggleDecisionFields(id);
         }
 
         function hideProcessModal(id) {
             document.getElementById('modal-' + id).classList.add('hidden');
             document.body.classList.remove('overflow-hidden');
-            document.documentElement.classList.remove('overflow-hidden'); // Hapus dari tag <html>
+            document.documentElement.classList.remove('overflow-hidden');
         }
+        
+        // Fungsi untuk menampilkan Modal Hapus
+        function showDeleteModal(id) {
+            document.getElementById('delete-modal-' + id).classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+            document.documentElement.classList.add('overflow-hidden'); 
+        }
+
+        // Fungsi untuk menyembunyikan Modal Hapus
+        function hideDeleteModal(id) {
+            document.getElementById('delete-modal-' + id).classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+            document.documentElement.classList.remove('overflow-hidden'); 
+        }
+
 
         function toggleDecisionFields(id) {
             const statusSelect = document.getElementById('status-' + id);
@@ -288,7 +397,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             // PASTIKAN SEMUA STATE KUNCI DIHAPUS SAAT HALAMAN DIMUAT
             document.body.classList.remove('overflow-hidden');
-            document.documentElement.classList.remove('overflow-hidden'); // GARANSI HILANG
+            document.documentElement.classList.remove('overflow-hidden');
 
             @foreach ($applicants as $applicant)
                 toggleDecisionFields('{{ $applicant->id }}');

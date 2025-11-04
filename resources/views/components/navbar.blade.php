@@ -2,7 +2,8 @@
     <nav class="container mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center py-4">
         <div class="flex items-center space-x-3">
             {{-- Logo: Menggunakan warna kontras yang terang (yellow-300) --}}
-            <span class="text-xl font-bold text-white-300">PN KLATEN</span>
+            <a href="{{ url('/') }}">
+                <img src="{{ asset('images/logo-1.png') }}" alt="Logo PN Klaten" class="h-15 w-auto">
         </div>
         <div class="hidden md:flex space-x-8 text-white font-medium">
 
@@ -27,8 +28,8 @@
                     $profileRoute = $role === 'admin' ? route('admin.dashboard') : route('user.dashboard');
                 @endphp
 
-                {{-- Link Profil: Menggunakan warna terang (yellow-300) sebagai penekanan --}}
-                <a href="{{ $profileRoute }}" class="font-bold text-red-300 px-3 py-1 rounded-md hover:text-white">
+                {{-- Link Profil: Menggunakan font-bold untuk penekanan, tapi sejajar --}}
+                <a href="{{ $profileRoute }}" class="font-bold hover:text-red-300 transition duration-150">
                     Profil
                 </a>
             @else

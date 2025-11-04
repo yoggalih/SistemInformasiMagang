@@ -35,9 +35,9 @@
         </div>
     </div>
 
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-3 text-center border-t border-red-700">
+    {{-- <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-3 text-center border-t border-red-700">
         <p class="text-xs">Dikembangkan oleh **Galih Yoga**</p>
-    </div>
+    </div> --}}
 </footer>
 
 <style>

@@ -15,6 +15,8 @@ class MagangApplicants extends Model
         'program_studi',
         'email',
         'nomor_hp',
+        'tanggal_mulai',
+        'tanggal_selesai',
         // 'pilihan_divisi',
         'surat_pengantar_path',
         // --- Kolom Admin Decision ---

@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('program_studi', 100);
             $table->string('email', 100)->unique();
             $table->string('nomor_hp', 20);
+            $table->date('tanggal_mulai');
+            $table->date('tanggal_selesai');
             // $table->enum('pilihan_divisi', ['ptip', 'kepegawaian', 'keuangan', 'hukum', 'umum']);
             $table->string('surat_pengantar_path'); // Dari pendaftar
             

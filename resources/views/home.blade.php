@@ -1,121 +1,90 @@
 @extends('layouts.app')
 
-@section('title', 'Beranda - Magang PN Klaten')
+@section('title', 'Beranda - Sistem Informasi Magang PN Klaten')
 
 @section('content')
 
-    {{-- BAGIAN 1: HERO (Selamat Datang) | FULL SCREEN --}}
-    <section class="bg-pn-light min-h-screen flex items-center py-12">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center gap-10">
-            <div class="md:w-1/2">
-                {{-- Mengurangi ukuran font pada layar besar agar tidak terlalu dominan --}}
-                <h1 class="text-4xl lg:text-5xl xl:text-5xl font-extrabold text-pn-maroon mb-4 leading-tight">
-                    Selamat Datang di Website Informasi Magang Pengadilan Negeri Klaten
-                </h1>
-                <p class="text-lg lg:text-xl text-gray-600 mb-8">
-                    Temukan informasi lengkap tentang prosedur, dan pendaftaran magang di sini.
+    {{-- BAGIAN 1: HERO SECTION --}}
+    <section class="relative bg-cover bg-center h-screen flex items-center "
+        style="background-image: url({{ asset('images/gedung.jpg') }});">
+        <div class="absolute inset-0 bg-black opacity-60"></div>
+        <div
+            class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-white text-center animate__animated animate__bounceIn">
+            <h1 class="text-5xl md:text-6xl font-extrabold mb-4 animate-fadeInDown">
+                Sistem Informasi Magang
+            </h1>
+            <p class="text-xl md:text-2xl mb-8 animate-fadeInUp">
+                Pengadilan Negeri Klaten Kelas IA
+            </p>
+            <div class="flex justify-center space-x-4 animate-fadeInUp delay-300">
+                <a href="{{ route('daftar.form') }}"
+                    class="bg-pn-maroon hover:bg-red-800 text-white font-semibold py-3 px-8 rounded-full transition duration-300 shadow-lg">
+                    Daftar Magang Sekarang
+                </a>
+
+                <a href="{{ route('faq') }}"
+                    class="bg-pn-maroon hover:bg-red-800 text-white font-semibold py-3 px-8 rounded-full transition duration-300 shadow-lg">
+                    Pelajari Lebih Lanjut
+                </a>
+            </div>
+        </div>
+    </section>
+
+    {{-- BAGIAN 2: FITUR UTAMA --}}
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl font-bold text-gray-800 mb-10">Layanan Unggulan Kami</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="p-6 bg-pn-light rounded-lg shadow-md border-t-4 border-pn-maroon">
+                    <i class="fas fa-file-alt text-4xl text-pn-maroon mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-3">Pendaftaran Online</h3>
+                    <p class="text-gray-600">Ajukan permohonan magang Anda kapan saja dan di mana saja melalui sistem kami
+                        yang terintegrasi.</p>
+                </div>
+                <div class="p-6 bg-pn-light rounded-lg shadow-md border-t-4 border-pn-maroon">
+                    <i class="fas fa-search text-4xl text-pn-maroon mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-3">Cek Status Real-time</h3>
+                    <p class="text-gray-600">Lacak perkembangan status lamaran Anda secara langsung tanpa perlu menghubungi
+                        kami.</p>
+                </div>
+                <div class="p-6 bg-pn-light rounded-lg shadow-md border-t-4 border-pn-maroon">
+                    <i class="fas fa-hands-helping text-4xl text-pn-maroon mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-3">Integrasi Data</h3>
+                    <p class="text-gray-600">Data pendaftar tersimpan aman dan terintegrasi dengan sistem administrasi
+                        internal.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {{-- BAGIAN 3: TENTANG PN KLATEN --}}
+    <section class="bg-gray-100 py-20">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row items-center">
+            <div class="lg:w-1/2 mb-10 lg:mb-0 lg:pr-10">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">Mengenal Pengadilan Negeri Klaten</h2>
+                <p class="text-gray-600 mb-4">
+                    Kegiatan magang di Pengadilan Negeri Klaten Kelas IA merupakan kesempatan bagi mahasiswa untuk
+                    memperoleh pengalaman langsung dalam memahami sistem kerja lembaga peradilan di bawah naungan Mahkamah
+                    Agung Republik Indonesia. Melalui kegiatan ini, mahasiswa dapat mempelajari proses administrasi perkara,
+                    mekanisme persidangan, serta penerapan teknologi informasi dalam mendukung pelayanan publik. Selain itu,
+                    magang ini juga bertujuan untuk menumbuhkan sikap profesional, kedisiplinan, dan tanggung jawab
+                    mahasiswa dalam menerapkan ilmu yang telah diperoleh di lingkungan kerja nyata.
+
                 </p>
-                <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-                    {{-- Tombol Primer (Daftar Sekarang) --}}
-                    <a href="{{ url('/daftar') }}"
-                        class="bg-red-600 text-white px-6 py-3 rounded-xl font-bold text-base hover:bg-red-700 transition duration-300 shadow-lg transform hover:scale-105">
-                        Daftar Sekarang
-                    </a>
-                    {{-- Tombol Sekunder (Lihat Alur) --}}
-                    <a href="#alur-syarat"
-                        class="bg-white border-2 border-red-600 text-red-600 px-6 py-3 rounded-xl font-bold text-base hover:bg-red-50 transition duration-300 shadow-md">
-                        Lihat Alur & Syarat
-                    </a>
-                </div>
+
+                <a href="{{ route('faq') }}"
+                    class="text-pn-maroon font-semibold hover:text-red-800 transition duration-300 flex items-center">
+                    Lihat detail persyaratan <i class="fas fa-arrow-right ml-2 text-sm"></i>
+                </a>
             </div>
-            <div class="md:w-1/2 flex justify-center">
-                {{-- Memastikan gambar tidak terlalu besar (maksimal lebar L) --}}
-                <img src="{{ asset('images/gedung.jpg') }}" alt="Gambar Gedung PN Klaten"
-                    class="w-full max-w-lg h-auto rounded-xl shadow-2xl border-4 border-white">
+            <div class="lg:w-1/2">
+                <img src="{{ asset('images/gedung.jpg') }}" alt="Gedung PN Klaten"
+                    class="rounded-lg shadow-xl w-full max-w-lg mx-auto transform hover:scale-105 transition duration-500">
             </div>
         </div>
     </section>
 
-    {{-- BAGIAN 2: TENTANG MAGANG | FULL SCREEN --}}
-    <section id="tentang" class="min-h-screen flex items-center py-16">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-3xl font-bold text-center text-pn-maroon mb-10">Tentang Magang di PN Klaten</h2>
-            <div class="max-w-4xl mx-auto bg-gray-50 p-8 rounded-2xl shadow-xl border-t-8 border-red-600">
-                <p class="text-lg text-gray-700 leading-relaxed text-justify">
-                    Pengadilan Negeri Klaten membuka kesempatan magang bagi mahasiswa dan siswa SMK/sederajat yang ingin
-                    mendapatkan pengalaman praktis di lingkungan peradilan. Kegiatan ini bertujuan utama memberikan
-                    pemahaman yang komprehensif tentang dunia kerja, struktur organisasi, dan proses operasional di
-                    lingkungan Pengadilan Negeri. Peserta magang akan terlibat dalam kegiatan nyata seperti administrasi,
-                    bantuan teknologi informasi, dan observasi persidangan.
-                </p>
-            </div>
-        </div>
-    </section>
-
-    {{-- BAGIAN 3: ALUR DAN SYARAT PENDAFTARAN | FULL SCREEN --}}
-    <section id="alur-syarat" class="min-h-screen flex items-center py-16 bg-gray-100">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-3xl font-bold text-center text-pn-maroon mb-10">Alur & Syarat Pendaftaran Magang</h2>
-
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 max-w-6xl mx-auto">
-
-                {{-- BLOK SYARAT PENDAFTARAN --}}
-                <div>
-                    <h3 class="text-2xl font-bold text-gray-800 mb-5 flex items-center">
-                        <span class="text-red-600 mr-2 text-3xl">📝</span> Syarat Administrasi
-                    </h3>
-                    <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-pn-maroon space-y-3">
-                        <p class="text-base text-gray-700">1. Mahasiswa aktif atau Siswa SMK/Sederajat.</p>
-                        <p class="text-base text-gray-700">2. Mengajukan permohonan magang untuk periode minimal 1 bulan.
-                        </p>
-                        <p class="text-base text-gray-700">3. Melampirkan <b>Surat Pengantar Resmi</b> dari Lembaga
-                            Pendidikan
-                            (kampus/sekolah) dalam format <b>PDF</b>.</p>
-                        <p class="text-base text-gray-700">4. Melakukan pendaftaran menggunakan <b>Email Aktif</b> dan Nomor
-                            HP yang valid.
-                        </p>
-                        <p class="text-base text-gray-700">5. Sudah memiliki akun login di sistem ini (melalui halaman
-                            <b>Register</b>).
-                        </p>
-                    </div>
-                </div>
-
-                {{-- BLOK ALUR PENDAFTARAN --}}
-                <div>
-                    <h3 class="text-2xl font-bold text-gray-800 mb-5 flex items-center">
-                        <span class="text-red-600 mr-2 text-3xl">➡️</span> Tahapan Pendaftaran
-                    </h3>
-                    <ol class="space-y-4">
-                        <li class="p-4 bg-white rounded-xl shadow-md border-l-4 border-pn-maroon">
-                            <span class="font-bold text-pn-maroon mr-2">Tahap 1: Registrasi Akun</span>
-                            <p class="text-sm text-gray-700">Daftar akun melalui menu <b>Login</b> atau <b>Register.</b></p>
-                        </li>
-                        <li class="p-4 bg-white rounded-xl shadow-md border-l-4 border-pn-maroon">
-                            <span class="font-bold text-pn-maroon mr-2">Tahap 2: Isi Formulir</span>
-                            <p class="text-sm text-gray-700">Akses menu <b>Daftar Magang</b>, isi formulir dengan lengkap
-                                dan
-                                <b>upload</b> Surat Pengantar PDF Anda.
-                            </p>
-                        </li>
-                        <li class="p-4 bg-white rounded-xl shadow-md border-l-4 border-pn-maroon">
-                            <span class="font-bold text-pn-maroon mr-2">Tahap 3: Review Admin</span>
-                            <p class="text-sm text-gray-700">Admin PN Klaten akan meninjau kelengkapan dan kesesuaian berkas
-                                Anda.</p>
-                        </li>
-                        <li class="p-4 bg-white rounded-xl shadow-md border-l-4 border-pn-maroon">
-                            <span class="font-bold text-pn-maroon mr-2">Tahap 4: Cek Status</span>
-                            <p class="text-sm text-gray-700">Cek status keputusan (Diterima/Ditolak) secara berkala melalui
-                                menu
-                                <b>Cek Status.</b>
-                            </p>
-                        </li>
-                    </ol>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    {{-- BAGIAN 4: TESTIMONIAL | TIDAK FULL SCREEN, LEBIH RAPI --}}
+    {{-- BAGIAN 4: TESTIMONIAL --}}
     <section class="bg-pn-light py-20">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <h2 class="text-3xl font-bold text-center text-pn-maroon mb-10">💬 Kata Mereka</h2>
@@ -132,17 +101,60 @@
         </div>
     </section>
 
-    {{-- FOOTER STATIS (Menggulir) --}}
-    <footer class="bg-pn-maroon text-white py-8">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <p class="text-base font-semibold mb-2">Pengadilan Negeri Klaten Kelas IA</p>
-            <p class="text-sm mb-1">Jl. Pramuka No.1, Klaten, Jawa Tengah 57413</p>
-            <p class="text-sm mb-4">Telepon: (0272) 321683 | Email: <a href="mailto:pn.klaten@gmail.com"
-                    class="hover:underline">pn.klaten@gmail.com</a></p>
-            {{-- <p class="text-xs text-gray-300 border-t border-gray-700 pt-4 mt-4">
-                &copy; {{ date('Y') }} Sistem Informasi Magang Pengadilan Negeri Klaten. Semua Hak Dilindungi.
-            </p> --}}
+    {{-- BAGIAN 5: DAFTAR PESERTA MAGANG AKTIF & SELESAI (TABEL GABUNGAN) [BARU] --}}
+    <section class="py-20 bg-gray-100">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-4">Daftar Peserta Magang (Aktif & Riwayat)</h2>
+            <p class="text-center text-gray-600 mb-8">Data mahasiswa yang sedang dan telah menyelesaikan program magang di
+                PN Klaten.</p>
+
+            <div class="max-w-6xl mx-auto overflow-x-auto bg-white shadow-lg rounded-lg">
+                @if ($allInterns->isEmpty())
+                    <div class="text-center p-8 text-gray-500 italic">
+                        Tidak ada data peserta magang (aktif maupun riwayat) yang ditemukan.
+                    </div>
+                @else
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-pn-light">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Nama</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Institusi / Prodi</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Periode Magang</th>
+                                <th
+                                    class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200">
+                            @foreach ($allInterns as $intern)
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                        {{ $intern->nama_lengkap }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                                        <div class="font-medium text-gray-900">{{ $intern->asal_institusi }}</div>
+                                        <div class="text-xs text-gray-500">{{ $intern->program_studi }}</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        {{ \Carbon\Carbon::parse($intern->tanggal_mulai)->format('d M Y') }} -
+                                        {{ \Carbon\Carbon::parse($intern->tanggal_selesai)->format('d M Y') }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-center">
+                                        <span
+                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-{{ $intern->status_color }}-100 text-{{ $intern->status_color }}-800">
+                                            {{ $intern->status_desc }}
+                                        </span>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                @endif
+            </div>
+            <p class="text-center text-xs text-gray-500 mt-4">*Data riwayat magang dibatasi 10 entri terbaru.</p>
         </div>
-    </footer>
+    </section>
 
 @endsection

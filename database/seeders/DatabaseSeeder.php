@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
         // Membuat user admin default
         User::create([
             'name' => 'Admin PN Klaten',
-            'email' => 'admin@pn-klaten.test', // Ganti dengan email admin yang Anda inginkan
+            'email' => '2200018335@webmail.uad.ac.id', // Ganti dengan email admin yang Anda inginkan
             'password' => Hash::make('password123'), // Ganti dengan password yang kuat
             'role' => 'admin', // ROLE PENTING UNTUK MENGAKSES DASHBOARD ADMIN
         ]);

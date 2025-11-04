@@ -23,6 +23,17 @@ Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('regi
 Route::post('/register', [AuthController::class, 'register'])->name('register.store');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+// --- Fitur Lupa Password (Placeholder) ---
+Route::get('forgot-password', function () {
+    // Menampilkan view formulir lupa password
+    return view('auth.forgot-password');
+})->name('password.request');
+Route::post('forgot-password', function () {
+    // Dummy logic, implementasi penuh memerlukan Laravel's mail/notification setup
+    return back()->with('status', 'Tautan reset password telah dikirim ke email Anda.');
+})->name('password.email');
+// ----------------------------------------
+
 
 // ====================================================================
 // AREA DILINDUNGI (Wajib Login)
@@ -42,14 +53,20 @@ Route::middleware('auth')->group(function () {
 
         // Cek Status Magang (menggunakan email dari sesi)
         Route::get('/status', [AppController::class, 'showStatus'])->name('status.show');
+
+        // Tambahan fitur: Pengaturan Profil (Nama, Email & Password)
+        Route::get('/profile', [AuthController::class, 'showProfileForm'])->name('user.profile.show');
+        Route::post('/profile', [AuthController::class, 'updateProfile'])->name('user.profile.update');
     });
 
     // 2. DASHBOARD ADMIN
     Route::prefix('admin')->group(function () {
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 
-        // PERBAIKAN: Menghapus 'uri:'
         Route::post('/applicant/{id}/process', [AdminController::class, 'processApplicant'])->name('admin.applicant.process');
+
+        // [BARU] Rute untuk Menghapus Pelamar
+        Route::post('/applicant/{id}/delete', [AdminController::class, 'deleteApplicant'])->name('admin.applicant.delete');
 
         Route::get('/download/{fileType}/{id}', [AdminController::class, 'downloadFile'])->name('admin.download.file');
     });

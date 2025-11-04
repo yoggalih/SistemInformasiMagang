@@ -18,7 +18,7 @@
 
                 <form method="POST" action="{{ $attemptRoute }}">
                     @csrf
-                    
+
                     {{-- Pesan Status dan Error --}}
                     @if (session('status'))
                         <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4" role="alert">
@@ -47,14 +47,22 @@
                             class="w-full border-gray-300 rounded-md shadow-sm focus:border-pn-maroon focus:ring-pn-maroon">
                     </div>
 
-                    <div class="text-center">
+                    <div class="text-right mb-4">
+                        <a href="{{ route('password.request') }}"
+                            class="text-sm text-gray-500 hover:text-pn-maroon hover:underline">
+                            Lupa Password?
+                        </a>
+                    </div>
+
+                    <div class="text-center mt-2">
                         <button type="submit"
                             class="w-full bg-red-900 text-white px-4 py-2 rounded-lg font-semibold hover:bg-red-800 transition duration-300 shadow-md">
                             Login
                         </button>
                     </div>
                     <p class="text-center text-sm text-gray-600 mt-4">
-                        Belum punya akun? <a href="{{ $registerRoute }}" class="text-pn-maroon hover:underline">Daftar di sini</a>
+                        Belum punya akun? <a href="{{ $registerRoute }}" class="text-pn-maroon hover:underline">Daftar di
+                            sini</a>
                     </p>
                 </form>
             </div>

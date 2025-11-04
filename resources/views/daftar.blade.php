@@ -11,7 +11,7 @@
         </p>
 
         <div class="max-w-3xl mx-auto bg-gray-50 p-8 rounded-lg shadow-xl border-t-4 border-pn-maroon">
-            <form action="{{ route('daftar.store') }}" method="POST" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('daftar.store') }}" enctype="multipart/form-data">
                 @csrf
 
                 @if (session('success'))
@@ -20,7 +20,7 @@
                         <p>{{ session('success') }}</p>
                     </div>
                 @endif
-                
+
                 @if (session('error'))
                     <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4" role="alert">
                         <p class="font-bold">Kesalahan:</p>
@@ -42,29 +42,32 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <label for="nama_lengkap" class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap:</label>
-                        <input type="text" name="nama_lengkap" id="nama_lengkap" required value="{{ old('nama_lengkap') }}"
+                        <input type="text" name="nama_lengkap" id="nama_lengkap" required
+                            value="{{ old('nama_lengkap') }}"
                             class="w-full border-gray-300 rounded-md shadow-sm focus:border-pn-maroon focus:ring-pn-maroon">
                     </div>
 
                     <div>
                         <label for="asal_institusi" class="block text-sm font-medium text-gray-700 mb-1">Asal
                             Universitas/Sekolah:</label>
-                        <input type="text" name="asal_institusi" id="asal_institusi" required value="{{ old('asal_institusi') }}"
+                        <input type="text" name="asal_institusi" id="asal_institusi" required
+                            value="{{ old('asal_institusi') }}"
                             class="w-full border-gray-300 rounded-md shadow-sm focus:border-pn-maroon focus:ring-pn-maroon">
                     </div>
 
                     <div>
                         <label for="program_studi" class="block text-sm font-medium text-gray-700 mb-1">Program
                             Studi:</label>
-                        <input type="text" name="program_studi" id="program_studi" required value="{{ old('program_studi') }}"
+                        <input type="text" name="program_studi" id="program_studi" required
+                            value="{{ old('program_studi') }}"
                             class="w-full border-gray-300 rounded-md shadow-sm focus:border-pn-maroon focus:ring-pn-maroon">
                     </div>
 
                     @auth
                         {{-- Jika sudah login: Email disembunyikan dan diisi otomatis --}}
                         <div class="md:col-span-2 bg-blue-100 p-3 rounded-md border border-blue-300">
-                            <p class="text-sm font-medium text-blue-700">Email Anda otomatis terisi: 
-                            <span class="font-semibold">{{ Auth::user()->email }}</span> 
+                            <p class="text-sm font-medium text-blue-700">Email Anda otomatis terisi:
+                                <span class="font-semibold">{{ Auth::user()->email }}</span>
                             </p>
                         </div>
                         {{-- Input email disembunyikan untuk dikirim ke controller --}}
@@ -84,27 +87,43 @@
                         <input type="tel" name="nomor_hp" id="nomor_hp" required value="{{ old('nomor_hp') }}"
                             class="w-full border-gray-300 rounded-md shadow-sm focus:border-pn-maroon focus:ring-pn-maroon">
                     </div>
-                    
-                </div>
 
-                <div class="mt-6">
-                    <label for="surat_pengantar" class="block text-sm font-medium text-gray-700 mb-1">Upload Surat Pengantar
-                        (PDF):</label>
-                    <input type="file" name="surat_pengantar" id="surat_pengantar" accept=".pdf" required
-                        class="w-full text-gray-600 border border-gray-300 rounded-md p-2 focus:border-pn-maroon focus:ring-pn-maroon">
-                    <p class="text-xs text-gray-500 mt-1">Hanya file PDF yang diizinkan.</p>
-                </div>
+                    <div>
+                        <label for="tanggal_mulai" class="block text-sm font-medium text-gray-700 mb-1">Tanggal Mulai
+                            Magang:</label>
+                        <input type="date" name="tanggal_mulai" id="tanggal_mulai" required
+                            value="{{ old('tanggal_mulai') }}"
+                            class="w-full border-gray-300 rounded-md shadow-sm focus:border-pn-maroon focus:ring-pn-maroon">
+                    </div>
 
-                <div class="mt-8 text-center">
-                    <button type="submit"
-                        class="bg-pn-maroon text-black px-8 py-3 rounded-lg font-semibold hover:bg-red-800 transition duration-300 shadow-lg transform hover:scale-105">
-                        Kirim Pendaftaran
-                    </button>
-                </div>
+                    <div>
+                        <label for="tanggal_selesai" class="block text-sm font-medium text-gray-700 mb-1">Tanggal Selesai
+                            Magang:</label>
+                        <input type="date" name="tanggal_selesai" id="tanggal_selesai" required
+                            value="{{ old('tanggal_selesai') }}"
+                            class="w-full border-gray-300 rounded-md shadow-sm focus:border-pn-maroon focus:ring-pn-maroon">
 
-                <p class="text-sm text-center text-gray-500 mt-4 italic">
-                    Setelah dikirim, data akan diteruskan ke admin untuk proses seleksi.
-                </p>
+                    </div>
+
+                    <div class="mt-6">
+                        <label for="surat_pengantar" class="block text-sm font-medium text-gray-700 mb-1">Upload Surat
+                            Pengantar
+                            (PDF):</label>
+                        <input type="file" name="surat_pengantar" id="surat_pengantar" accept=".pdf" required
+                            class="w-full text-gray-600 border border-gray-300 rounded-md p-2 focus:border-pn-maroon focus:ring-pn-maroon">
+                        <p class="text-xs text-gray-500 mt-1">Hanya file PDF yang diizinkan.</p>
+                    </div>
+
+                    <div class="mt-8 text-center">
+                        <button type="submit"
+                            class="bg-pn-maroon text-black px-8 py-3 rounded-lg font-semibold hover:bg-red-800 transition duration-300 shadow-lg transform hover:scale-105">
+                            Kirim Pendaftaran
+                        </button>
+                    </div>
+
+                    <p class="text-sm text-center text-gray-500 mt-4 italic">
+                        Setelah dikirim, data akan diteruskan ke admin untuk proses seleksi.
+                    </p>
             </form>
         </div>
     </div>
