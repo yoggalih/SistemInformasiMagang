@@ -33,29 +33,40 @@
     {{-- BAGIAN 2: FITUR UTAMA --}}
     <section class="py-20 bg-white">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 class="text-3xl font-bold text-gray-800 mb-10">Layanan Unggulan Kami</h2>
+            <h2 class="text-3xl font-bold text-gray-800 mb-10">Layanan Utama Sistem Informasi Magang PN Klaten</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="p-6 bg-pn-light rounded-lg shadow-md border-t-4 border-pn-maroon">
-                    <i class="fas fa-file-alt text-4xl text-pn-maroon mb-4"></i>
-                    <h3 class="text-xl font-semibold mb-3">Pendaftaran Online</h3>
-                    <p class="text-gray-600">Ajukan permohonan magang Anda kapan saja dan di mana saja melalui sistem kami
-                        yang terintegrasi.</p>
+
+                <div class="p-6 bg-pn-light rounded-lg shadow-md border-t-4 border-pn-maroon hover:shadow-xl transition">
+                    <i class="fas fa-laptop text-4xl text-pn-maroon mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-3">Pendaftaran Digital</h3>
+                    <p class="text-gray-600">
+                        Calon peserta dapat melakukan <strong>pendaftaran magang secara online</strong> tanpa harus datang
+                        ke kantor, cukup melalui formulir yang tersedia pada sistem ini.
+                    </p>
                 </div>
-                <div class="p-6 bg-pn-light rounded-lg shadow-md border-t-4 border-pn-maroon">
-                    <i class="fas fa-search text-4xl text-pn-maroon mb-4"></i>
-                    <h3 class="text-xl font-semibold mb-3">Cek Status Real-time</h3>
-                    <p class="text-gray-600">Lacak perkembangan status lamaran Anda secara langsung tanpa perlu menghubungi
-                        kami.</p>
+
+                <div class="p-6 bg-pn-light rounded-lg shadow-md border-t-4 border-pn-maroon hover:shadow-xl transition">
+                    <i class="fas fa-envelope-open-text text-4xl text-pn-maroon mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-3">Notifikasi Hasil Seleksi</h3>
+                    <p class="text-gray-600">
+                        Peserta akan menerima <strong>pemberitahuan resmi melalui email</strong> terkait hasil seleksi
+                        magang — apakah diterima atau belum, dengan informasi jadwal dan ketentuan selanjutnya.
+                    </p>
                 </div>
-                <div class="p-6 bg-pn-light rounded-lg shadow-md border-t-4 border-pn-maroon">
-                    <i class="fas fa-hands-helping text-4xl text-pn-maroon mb-4"></i>
-                    <h3 class="text-xl font-semibold mb-3">Integrasi Data</h3>
-                    <p class="text-gray-600">Data pendaftar tersimpan aman dan terintegrasi dengan sistem administrasi
-                        internal.</p>
+
+                <div class="p-6 bg-pn-light rounded-lg shadow-md border-t-4 border-pn-maroon hover:shadow-xl transition">
+                    <i class="fas fa-clipboard-list text-4xl text-pn-maroon mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-3">Pemantauan Status</h3>
+                    <p class="text-gray-600">
+                        Sistem menyediakan fitur untuk <strong>melacak status lamaran</strong> secara langsung, mulai dari
+                        tahap pengajuan hingga selesai, agar peserta mendapatkan transparansi penuh.
+                    </p>
                 </div>
+
             </div>
         </div>
     </section>
+
 
     {{-- BAGIAN 3: TENTANG PN KLATEN --}}
     <section class="bg-gray-100 py-20">
@@ -80,23 +91,6 @@
             <div class="lg:w-1/2">
                 <img src="{{ asset('images/gedung.jpg') }}" alt="Gedung PN Klaten"
                     class="rounded-lg shadow-xl w-full max-w-lg mx-auto transform hover:scale-105 transition duration-500">
-            </div>
-        </div>
-    </section>
-
-    {{-- BAGIAN 4: TESTIMONIAL --}}
-    <section class="bg-pn-light py-20">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-3xl font-bold text-center text-pn-maroon mb-10">💬 Kata Mereka</h2>
-            <div class="max-w-xl mx-auto bg-white p-6 rounded-xl shadow-xl border-l-8 border-pn-maroon">
-                <p class="text-lg italic text-gray-700 mb-4 leading-relaxed">
-                    "Magang di PN Klaten memberikan pengalaman berharga, terutama dalam memahami proses administrasi dan
-                    teknologi informasi di lingkungan peradilan. Stafnya sangat membantu dan lingkungannya sangat kondusif
-                    untuk belajar!"
-                </p>
-                <p class="text-right font-semibold text-base text-pn-maroon">
-                    — Andi, Mahasiswa Informatika
-                </p>
             </div>
         </div>
     </section>
@@ -153,7 +147,24 @@
                     </table>
                 @endif
             </div>
-            <p class="text-center text-xs text-gray-500 mt-4">*Data riwayat magang dibatasi 10 entri terbaru.</p>
+            <p class="text-center text-xs text-gray-500 mt-4">Data riwayat magang dibatasi 10 entri terbaru.</p>
+        </div>
+    </section>
+
+    {{-- BAGIAN 4: TESTIMONIAL --}}
+    <section class="bg-pn-light py-20">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-center text-pn-maroon mb-10">💬 Kata Mereka</h2>
+            <div class="max-w-xl mx-auto bg-white p-6 rounded-xl shadow-xl border-l-8 border-pn-maroon">
+                <p class="text-lg italic text-gray-700 mb-4 leading-relaxed">
+                    "Magang di PN Klaten memberikan pengalaman berharga, terutama dalam memahami proses administrasi dan
+                    teknologi informasi di lingkungan peradilan. Stafnya sangat membantu dan lingkungannya sangat kondusif
+                    untuk belajar!"
+                </p>
+                <p class="text-right font-semibold text-base text-pn-maroon">
+                    — Andi, Mahasiswa Informatika
+                </p>
+            </div>
         </div>
     </section>
 
