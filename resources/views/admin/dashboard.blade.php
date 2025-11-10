@@ -81,7 +81,8 @@
                             HP</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">File
                             Pelamar</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Durasi Magang
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Durasi
+                            Magang
                         </th>
                         <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Status
                         </th>
@@ -106,14 +107,20 @@
                                 <div class="text-xs text-gray-500">{{ $applicant->nomor_hp }}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-center text-sm">
-                                <a href="{{ route('admin.download.file', ['fileType' => 'pengantar', 'id' => $applicant->id]) }}"
+                                {{-- <a href="{{ route('admin.download.file', ['fileType' => 'pengantar', 'id' => $applicant->id]) }}"
                                     class="text-blue-600 hover:text-blue-900" target="_blank">
                                     Unduh Surat
+                                </a> --}}
+
+                                <a href="{{ route('admin.download.file', ['fileType' => 'pengantar', 'id' => $applicant->id]) }}"
+                                    class="text-blue-500 hover:text-blue-700">
+                                    Download
                                 </a>
+
                             </td>
                             {{-- KOLOM DURASI MAGANG [BARU] --}}
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-left">
-                                @if($applicant->tanggal_mulai && $applicant->tanggal_selesai)
+                                @if ($applicant->tanggal_mulai && $applicant->tanggal_selesai)
                                     @php
                                         $startDate = \Carbon\Carbon::parse($applicant->tanggal_mulai);
                                         $endDate = \Carbon\Carbon::parse($applicant->tanggal_selesai);
@@ -121,10 +128,11 @@
                                         $durationDays = $startDate->diffInDays($endDate) + 1;
                                         $durationMonths = $startDate->diffInMonths($endDate);
                                     @endphp
-                                    <div class="font-medium text-gray-900">{{ $startDate->format('d M Y') }} - {{ $endDate->format('d M Y') }}</div>
+                                    <div class="font-medium text-gray-900">{{ $startDate->format('d M Y') }} -
+                                        {{ $endDate->format('d M Y') }}</div>
                                     <div class="text-xs text-gray-500 mt-1">
                                         Total: {{ $durationDays }} hari
-                                        @if($durationMonths > 0)
+                                        @if ($durationMonths > 0)
                                             ({{ $durationMonths }} bulan)
                                         @endif
                                     </div>
@@ -156,7 +164,8 @@
                                 @if ($applicant->status === 'pending')
                                     {{-- Tombol Proses (membuka Modal) --}}
                                     <button onclick="showProcessModal('{{ $applicant->id }}')"
-                                        class="bg-pn-maroon text-white px-3 py-1 rounded-md text-xs hover:bg-red-800">
+                                        class="bg-pn-maroon text-white px-3 py-1 rounded-md text-xs bg-red-800 
+           hover:bg-red-700 hover:scale-105 cursor-pointer transition-all duration-200">
                                         Proses Keputusan
                                     </button>
                                 @elseif ($applicant->status === 'accepted' && $applicant->surat_keputusan_path)
@@ -249,7 +258,7 @@
                                         </div>
                                         <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                                             <button type="submit"
-                                                class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-pn-maroon text-base font-medium text-white hover:bg-red-800 sm:ml-3 sm:w-auto sm:text-sm">
+                                                class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-pn-maroon text-base font-medium text-white bg-red-800 sm:ml-3 sm:w-auto sm:text-sm">
                                                 Simpan Keputusan
                                             </button>
                                             <button type="button" onclick="hideProcessModal('{{ $applicant->id }}')"
@@ -266,7 +275,7 @@
                         <div id="delete-modal-{{ $applicant->id }}" class="fixed inset-0 z-50 overflow-y-auto hidden">
                             <div
                                 class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-                                
+
                                 <div class="fixed inset-0 transition-opacity" aria-hidden="true">
                                     <div class="absolute inset-0 bg-gray-900 opacity-75"></div>
                                 </div>
@@ -291,14 +300,17 @@
                                                     </svg>
                                                 </div>
                                                 <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                                                    <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-headline">
+                                                    <h3 class="text-lg leading-6 font-medium text-gray-900"
+                                                        id="modal-headline">
                                                         Hapus Lamaran Permanen
                                                     </h3>
                                                     <div class="mt-2">
                                                         <p class="text-sm text-gray-500">
-                                                            Anda yakin ingin menghapus lamaran magang dari **{{ $applicant->nama_lengkap }}**?
+                                                            Anda yakin ingin menghapus lamaran magang dari
+                                                            **{{ $applicant->nama_lengkap }}**?
                                                             <br>
-                                                            **Semua data dan file terkait akan dihapus secara permanen.** Pelamar ini akan bisa mengajukan lamaran baru.
+                                                            **Semua data dan file terkait akan dihapus secara permanen.**
+                                                            Pelamar ini akan bisa mengajukan lamaran baru.
                                                         </p>
                                                     </div>
                                                 </div>
@@ -347,19 +359,19 @@
             document.body.classList.remove('overflow-hidden');
             document.documentElement.classList.remove('overflow-hidden');
         }
-        
+
         // Fungsi untuk menampilkan Modal Hapus
         function showDeleteModal(id) {
             document.getElementById('delete-modal-' + id).classList.remove('hidden');
             document.body.classList.add('overflow-hidden');
-            document.documentElement.classList.add('overflow-hidden'); 
+            document.documentElement.classList.add('overflow-hidden');
         }
 
         // Fungsi untuk menyembunyikan Modal Hapus
         function hideDeleteModal(id) {
             document.getElementById('delete-modal-' + id).classList.add('hidden');
             document.body.classList.remove('overflow-hidden');
-            document.documentElement.classList.remove('overflow-hidden'); 
+            document.documentElement.classList.remove('overflow-hidden');
         }
 
 

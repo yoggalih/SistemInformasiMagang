@@ -5,10 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\MagangApplicants;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Mail;    // [BARU] Impor Mail Facade
-use App\Mail\ApplicationStatusMail;     // [BARU] Impor Mailable Class
-use Illuminate\Support\Facades\Auth;    // Diperlukan untuk middleware/Auth::user()
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ApplicationStatusMail;
+use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 
 class AdminController extends Controller
 {
@@ -116,8 +117,11 @@ class AdminController extends Controller
      */
     public function downloadFile($fileType, $id)
     {
+        // 1. Ambil data pelamar
         $applicant = MagangApplicants::findOrFail($id);
+        $path = null;
 
+        // 2. Tentukan path dan nama file
         if ($fileType === 'pengantar') {
             $path = $applicant->surat_pengantar_path;
             $fileName = 'Surat_Pengantar_' . $applicant->nama_lengkap . '.pdf';
@@ -128,10 +132,17 @@ class AdminController extends Controller
             abort(404, 'File tidak ditemukan.');
         }
 
-        $path = str_replace('public/', '', $path);
+        // --- LOGIKA PEMBERSIHAN PATH: Mengatasi 'public/' dan memastikan $path valid ---
+        if ($path) {
+            // Menghapus awalan 'public/' secara aman dan membersihkan string dari karakter yang tidak perlu
+            $path = Str::replaceFirst('public/', '', $path);
+            $path = trim($path);
+        }
+        // ----------------------------------------------------------------------
 
-        if (Storage::disk('public')->exists($path)) {
-            // Menggunakan Storage::download untuk memastikan file didownload dengan nama yang benar
+        // 3. Cek file dan Download
+        // Menggunakan disk 'public'
+        if ($path && Storage::disk('public')->exists($path)) {
             return Storage::disk('public')->download($path, $fileName);
         }
 
@@ -145,12 +156,12 @@ class AdminController extends Controller
 
         // 1. Hapus File dari Storage
         // Hapus Surat Pengantar
-        if ($applicant->surat_pengantar_path && Storage::disk('public')->exists(str_replace('public/', '', $applicant->surat_pengantar_path))) {
+        if ($applicant->surat_pengantar_path && Storage::disk('public')->exists($applicant->surat_pengantar_path)) {
             Storage::delete($applicant->surat_pengantar_path);
         }
 
         // Hapus Surat Keputusan (jika ada)
-        if ($applicant->surat_keputusan_path && Storage::disk('public')->exists(str_replace('public/', '', $applicant->surat_keputusan_path))) {
+        if ($applicant->surat_keputusan_path && Storage::disk('public')->exists($applicant->surat_keputusan_path)) {
             Storage::delete($applicant->surat_keputusan_path);
         }
 

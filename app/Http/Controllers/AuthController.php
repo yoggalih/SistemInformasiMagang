@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use Illuminate\Validation\Rules;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\Password;
 use App\Http\Controllers\Controller;
 use Illuminate\Validation\Rule;
 
@@ -159,4 +163,82 @@ class AuthController extends Controller
 
         return redirect()->route('user.profile.show')->with('success', 'Profil berhasil diperbarui!');
     }
+
+    // --- PASSWORD RESET IMPLEMENTATION ---
+
+    /**
+     * Menampilkan form untuk meminta link reset password (forgot-password).
+     */
+    public function showLinkRequestForm()
+    {
+        return view('auth.forgot-password');
+    }
+
+    /**
+     * Mengirimkan link reset password ke email pengguna.
+     */
+    public function sendResetLinkEmail(Request $request)
+    {
+        // 1. Validasi email
+        $request->validate(['email' => 'required|email|exists:users,email'], ['email.exists' => 'Alamat email tidak terdaftar.']);
+
+        // 2. Mengirim link reset (memanfaatkan broker default 'users')
+        $response = Password::sendResetLink($request->only('email'));
+
+        // 3. Mengembalikan respons yang sesuai
+        return $response == Password::RESET_LINK_SENT
+            ? back()->with('status', __('Tautan reset password telah dikirim!')) // Success message
+            : back()->withErrors(['email' => __('Gagal mengirim link reset password.')]); // Error message (e.g., failed to send)
+    }
+
+    /**
+     * Menampilkan form reset password setelah pengguna mengklik link di email.
+     */
+    public function showResetForm(Request $request, $token = null)
+    {
+        // Menggunakan view baru: resources/views/auth/reset-password.blade.php
+        return view('auth.reset-password')->with(
+            ['token' => $token, 'email' => $request->email]
+        );
+    }
+
+    /**
+     * Memproses reset password.
+     */
+    public function resetPassword(Request $request)
+    {
+        // 1. Validasi input
+        $request->validate([
+            'token' => 'required',
+            'email' => 'required|email|exists:users,email',
+            'password' => 'required|confirmed|min:8',
+        ], [
+            'password.confirmed' => 'Konfirmasi password tidak cocok.',
+            'password.min' => 'Password minimal 8 karakter.',
+            'email.exists' => 'Alamat email tidak terdaftar.'
+        ]);
+
+        // 2. Reset password (menggunakan broker default 'users')
+        $response = Password::broker()->reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function (User $user, string $password) {
+                $user->password = Hash::make($password);
+                $user->setRememberToken(Str::random(60));
+                $user->save();
+            }
+        );
+
+        // 3. Mengembalikan respons yang sesuai
+        if ($response == Password::PASSWORD_RESET) {
+            // Berhasil: Redirect ke login dengan pesan sukses
+            return redirect()->route('login')->with('status', __('Password berhasil direset. Silakan login dengan password baru Anda.'));
+        }
+
+        // Gagal (token invalid, dll.): Kembali ke form dengan pesan error
+        return back()->withInput($request->only('email'))
+            ->withErrors(['email' => __('Token reset password tidak valid atau sudah kadaluarsa.')]);
+    }
+
+    // --- END PASSWORD RESET IMPLEMENTATION ---
+
 }

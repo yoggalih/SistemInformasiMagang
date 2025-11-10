@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\NewApplicationNotification;
+use Illuminate\Support\Str;
 
 class AppController extends Controller
 {
@@ -284,5 +285,39 @@ class AppController extends Controller
 
         // Tampilkan hasil di view yang sama
         return view('status_magang', compact('applicant'));
+    }
+
+
+    // --- NEW FUNCTION: DOWNLOAD SK FOR USER ---
+    /**
+     * Mengunduh Surat Keputusan (SK) untuk pengguna yang sedang login.
+     */
+    public function downloadUserSK($id)
+    {
+        // 1. Verifikasi kepemilikan
+        $applicant = MagangApplicants::where('id', $id)
+            ->where('user_id', Auth::id())
+            ->firstOrFail();
+
+        // 2. Cek ketersediaan file dan status diterima
+        if ($applicant->status !== 'accepted' || empty($applicant->surat_keputusan_path)) {
+            abort(404, 'File Surat Keputusan tidak tersedia.');
+        }
+
+        $path = $applicant->surat_keputusan_path;
+        $fileName = 'SK_Penerimaan_' . $applicant->nama_lengkap . '.pdf';
+
+        // --- LOGIKA HAPUS AWALAN 'public/' DARI PATH (UNTUK KOMPATIBILITAS) ---
+        if (str_starts_with($path, 'public/')) {
+            $path = substr($path, 7);
+        }
+        // ----------------------------------------------------------------------
+
+        // 3. Download File dari disk 'public'
+        if (Storage::disk('public')->exists($path)) {
+            return Storage::disk('public')->download($path, $fileName);
+        }
+
+        abort(404, 'File tidak ditemukan di server.');
     }
 }
