@@ -12,7 +12,7 @@ COPY resources/css resources/css
 COPY resources/js resources/js
 COPY vite.config.js .
 # Jalankan build aset ke public/build
-RUN npm run build --mode production
+RUN npm run build -- --mode production
 
 # =========================================================
 # STAGE 2: Build Aplikasi PHP Final (PHP FPM)
