@@ -18,7 +18,7 @@
 
                 <form method="POST" action="{{ $storeRoute }}">
                     @csrf
-                    
+
                     {{-- Menampilkan Error Validasi --}}
                     @if ($errors->any())
                         <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4" role="alert">
@@ -47,11 +47,19 @@
                         <input type="password" name="password" id="password" required
                             class="w-full border-gray-300 rounded-md shadow-sm focus:border-pn-maroon focus:ring-pn-maroon">
                     </div>
-                    
+
                     <div class="mb-6">
-                        <label for="password_confirmation" class="block text-sm font-medium text-gray-700 mb-1">Konfirmasi Password:</label>
+                        <label for="password_confirmation" class="block text-sm font-medium text-gray-700 mb-1">Konfirmasi
+                            Password:</label>
                         <input type="password" name="password_confirmation" id="password_confirmation" required
                             class="w-full border-gray-300 rounded-md shadow-sm focus:border-pn-maroon focus:ring-pn-maroon">
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="g-recaptcha" data-sitekey="{{ env('RECAPTCHA_SITE_KEY') }}"></div>
+                        @error('g-recaptcha-response')
+                            <p class="text-sm text-red-600 mt-2">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <div class="text-center">
@@ -60,9 +68,10 @@
                             Daftar
                         </button>
                     </div>
-                    
+
                     <p class="text-center text-sm text-gray-600 mt-4">
-                        Sudah punya akun? <a href="{{ $loginRoute }}" class="text-pn-maroon hover:underline">Login di sini</a>
+                        Sudah punya akun? <a href="{{ $loginRoute }}" class="text-pn-maroon hover:underline">Login di
+                            sini</a>
                     </p>
                 </form>
             </div>

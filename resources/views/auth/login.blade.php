@@ -54,6 +54,16 @@
                         </a>
                     </div>
 
+
+                    {{-- [BARU] Field reCAPTCHA --}}
+                    <div class="mb-4">
+                        <div class="g-recaptcha" data-sitekey="6LdLuggsAAAAAJjof9hHKbevsiqwkcxFqqBc9dKB"></div>
+                        @error('g-recaptcha-response')
+                            <p class="text-sm text-red-600 mt-2">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    {{-- END [BARU] Field reCAPTCHA --}}
+
                     <div class="text-center mt-2">
                         <button type="submit"
                             class="w-full bg-red-900 text-white px-4 py-2 rounded-lg font-semibold hover:bg-red-800 transition duration-300 shadow-md">

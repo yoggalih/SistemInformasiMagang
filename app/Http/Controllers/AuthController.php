@@ -28,10 +28,18 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
+        // dd(env('6LdLuggsAAAAANoV6Zvb5VB-WWCqYbxTYjYp0SD_'));
+
         $credentials = $request->validate([
             'email' => 'required|email',
             'password' => 'required',
+            'g-recaptcha-response' => 'required|captcha', // Validasi reCAPTCHA
+        ], [
+            'g-recaptcha-response.required' => 'Silakan verifikasi bahwa Anda bukan robot.',
+            'g-recaptcha-response.captcha' => 'Verifikasi reCAPTCHA gagal. Silakan coba lagi.',
         ]);
+
+        unset($credentials['g-recaptcha-response']); // Hapus reCAPTCHA dari kredensial
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
@@ -70,11 +78,14 @@ class AuthController extends Controller
             'password' => 'required|string|min:8|confirmed',
         ]);
 
+        unset($request['g-recaptcha-response']); // Hapus reCAPTCHA dari request
+
         // 2. Buat user baru dengan role default 'user'
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'g-recaptcha-response' => 'required|captcha',
             'role' => 'user', // Set role default saat registrasi
         ]);
 
